@@ -7,8 +7,10 @@ let feelsLykTemp=document.querySelector(".feelsLykTemp");
 let locationdisp=document.querySelector(".location");
 let weatherDesc=document.querySelector(".condition");
 let forecastEl=document.querySelector(".forecast");
-
-button.addEventListener("click",displayWeather);
+displayWeather("hyderabad");
+button.addEventListener("click",()=>{
+    displayWeather(input.value.trim());
+});
 input.addEventListener("keydown", function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
@@ -16,8 +18,7 @@ input.addEventListener("keydown", function(event) {
     }
 });
 
-async function displayWeather(){
-    let searchInput=input.value.trim();
+async function displayWeather(searchInput){
     const url=`https://api.weatherapi.com/v1/current.json?key=${key}&q=${searchInput}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -26,11 +27,10 @@ async function displayWeather(){
     feelsLykTemp.innerHTML=`${data.current.feelslike_c}&deg;c`
     currentTemp.innerHTML=`${data.current.temp_c}&deg;c`
     weatherImg.src=data.current.condition.icon;
-    displayForecast(data.current.last_updated);
+    displayForecast(data.current.last_updated,searchInput);
 }
 
-async function displayForecast(timese){
-    let searchInput=input.value.trim();
+async function displayForecast(timese,searchInput){
     const url=`https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${searchInput}`;
     const res = await fetch(url);
     const data = await res.json();
